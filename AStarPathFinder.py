@@ -1,13 +1,21 @@
 #!/usr/bin/env python
+import roslib
 import re
 import numpy
 from numpy.linalg import inv
 from matplotlib import pyplot
-
+from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Goal
 #----------------------------------------------------------------------------
+
 #----------------------------------------------------------------------------
 # Global Functions:
 
+# listener function:
+def listener():
+    rospy.init_node('goal_listener', anonymous=True)
+    rospy.Subscriber("/move_base_simple/goal", PoseStamped, callback)
+    rospy.spin()
 #
 def read_pgm(filename, byteorder='>'):
     """Return image data from a raw PGM file as numpy array.
