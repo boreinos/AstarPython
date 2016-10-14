@@ -13,6 +13,7 @@ goal = None
 ready = False
 
 def callback3(data):
+    global goal, ready
     #get goal, raise flag and allow current pose to handle
     rospy.loginfo(rospy.get_caller_id()+" goal recieved" )
     goal = data.data
@@ -20,13 +21,16 @@ def callback3(data):
 
 def callback2(data):
     if ready:
+        ready = False
         #acknowledge pose was recieved:
         rospy.loginfo(rospy.get_caller_id()+" pose map received")
+        
         #do something ...
-        ready = False
+        
     return 
 
 def callback(data):
+    global map_array
     rospy.loginfo(rospy.get_caller_id()+" map data received") #acknowledge for degub purposes
     width=data.info.width
     height=data.info.height
@@ -39,7 +43,7 @@ def callback(data):
         row = list(rawArray[start:n])
         for k in range(len(row)):
             if row[k] >5:
-                image[i,k]=1
+                image[i,k]=0
             elif row[k] == -1:
                 image[i,k]=200
             else:
